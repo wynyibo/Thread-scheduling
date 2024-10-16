@@ -56,40 +56,41 @@ static const struct argp argp = {
 
 static void sig_handler(int sig)
 {
-  //  signal_header(sig);
+    //signal_header(sig);
 }
-// void test(void *args)
-// {
-//     char *str = args;
-//     console_put_str(str);
-// }
 
-// void test1(void *args)
-// {
-//     char *str = args;
-//     while (1)
-//     {
-//         sleep(1);
-//         console_put_str(str);
-//     }
-// }
+void test(void *args)
+{
+    char *str = args;
+    console_put_str(str);
+}
 
-// /* cpu密集 */
-// void test2(void *args)
-// {
-//     while (1)
-//         ;
-// }
+void test1(void *args)
+{
+    char *str = args;
+    while (1)
+    {
+        sleep(1);
+        console_put_str(str);
+    }
+}
 
-// /* io密集 */
-// void test3(void *args)
-// {
-//     while (1)
-//     {
-//         sleep(1);
-//         console_put_str("rrr\n");
-//     }
-// }
+/* cpu密集 */
+void test2(void *args)
+{
+    while (1)
+        ;
+}
+
+/* io密集 */
+void test3(void *args)
+{
+    while (1)
+    {
+        sleep(1);
+        console_put_str("rrr\n");
+    }
+}
 
 static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va_list args)
 {
@@ -161,14 +162,14 @@ int main(int argc, char **argv)
         goto cleanup;
     }
     // 初始化任务系统
-    // init();
+    init();
 
-    // // 创建多个任务
-    // task_start("task1", 31, test, "argA ");
-    // for (int i = 0; i < 25; i++)
-    // {
-    //     task_start("abc", 31, test1, "a ");
-    // }
+    // 创建多个任务
+    task_start("task1", 31, test, "argA ");
+    for (int i = 0; i < 25; i++)
+    {
+        task_start("abc", 31, test1, "a ");
+    }
     /* Process events */
     while (!exiting)
     {
