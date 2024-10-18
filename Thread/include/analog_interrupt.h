@@ -6,7 +6,7 @@
 /**
  * interrupt_init - 中断启动
  * **/
-// void interrupt_init();
+void interrupt_init();
 
 /**
  * interrupt_enable - 中断使能

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-uint64_t ticks;
+extern uint64_t ticks;
 int clock_granularity = 10;
 LPTIMERMANAGER timer_manager;
 
@@ -305,31 +305,54 @@ void collaborative_schedule_helper(void* para){
 }
 
 
-void sig_handler(unsigned long* a)
-{
-    if(current_task->is_collaborative_schedule == false && current_task->ticks == 0) {
-        schedule(a);
-    } 
-}
+// void sig_handler(unsigned long* a)
+// {
+//     if(current_task->is_collaborative_schedule == false && current_task->ticks == 0) {
+//         schedule(a);
+//     } 
+// }
 
+
+// void interrupt_timer_handler(unsigned long* a) {
+//     // 不再需要手动管理时间片，直接处理接收到的信号
+//     assert(current_task->stack_magic == 0x19991120);
+
+//     // 调用调度逻辑
+//     if (current_task->is_collaborative_schedule == false && current_task->ticks == 0) {
+//         schedule(a);  // 调度任务
+//     }
+    
+    
+//     // else if (current_task->is_collaborative_schedule == false) {
+//     //     current_task->ticks--;  
+//     // } else {
+        
+//     //     collaborative_schedule(a);
+//     // }
+// }
 
 void interrupt_timer_handler(unsigned long* a)
 {
     assert(current_task->stack_magic == 0x19991120);
-    if(NULL != timer_manager) {
-        if(!timer_manager->uExitFlag) {
-            run_timer();
-        } else {
-            destroy_timer_manager();
-        }
-    }
+    // schedule(a);
+    // printf("ceshi1");
+    // if(NULL != timer_manager) {
+    //     if(!timer_manager->uExitFlag) {
+    //         run_timer();
+    //     } else {
+    //         destroy_timer_manager();
+    //     }
+    // }
 
-    
-    if(current_task->is_collaborative_schedule == false && current_task->ticks == 0) {
+     if(current_task->is_collaborative_schedule == false) {
+    //if(current_task->is_collaborative_schedule == false ) {
+        // printf("ticks=%d\n",current_task->ticks);
         schedule(a);
-    } else if(current_task->is_collaborative_schedule == false){    // 正常的削减时间片
-        current_task->ticks--;
-    } else {
+     }
+    // } else if(current_task->is_collaborative_schedule == false){    // 正常的削减时间片
+    //     current_task->ticks--;
+    // }
+    else {
         // 把当前任务加入定时器，然后正常调度一个处于全局等待队列上的数据
         LPTIMERNODE timenode = create_timer(collaborative_schedule_helper, (void*)current_task, current_task->sleep_millisecond, 0); 
         collaborative_schedule(a);

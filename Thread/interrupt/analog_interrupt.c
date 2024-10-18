@@ -13,12 +13,11 @@
 /**
  * signal_headler - 模拟中断核心
  * **/
-static void signal_headler(int signal_num)
-{
-	unsigned long a = 0;
-	interrupt_timer_handler(&a);
-}
-
+// static void signal_headler(int signal_num)
+// {
+// 	unsigned long a = 0;
+// 	interrupt_timer_handler(&a);
+// }
 
 /**
  * interrupt_init - 中断启动
@@ -26,13 +25,15 @@ static void signal_headler(int signal_num)
 // void interrupt_init()
 // {
 //   /* 模拟中断 */
-// 	signal(SIGALRM, signal_headler);
-//   signal(SIGUSR1,sigusr1_headler);
+// // signal_headler(14);
+// 	//signal(SIGALRM, signal_headler);
+//   signal(SIGUSR1,signal_headler);
 //   /* 10毫秒将会定时器SIGALRM就会唤醒一次中断 */
-// 	if(set_ticker(10) == -1) {
-//     clock_granularity = 10;
-// 		panic("set_ticker failed.");
-// 	}
+// 	// if(set_ticker(10) == -1) {
+//   //   clock_granularity = 10;
+// 	// 	panic("set_ticker failed.");
+// 	// }
+
 // }
 
 
